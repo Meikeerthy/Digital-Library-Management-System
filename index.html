@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Library Management System</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* Reset all margins and padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: url('computer-screen.jpg') no-repeat center center/cover;
+            font-family: Poppins, sans-serif;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            justify-content: space-between;
+            overflow-x: hidden; /* Prevent horizontal overflow */
+        }
+        
+        header {
+            padding: 15px;
+            text-align: center;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        nav ul li a:hover {
+            color: #28a99e;
+        }
+
+        /* Admin Portal link styled with theme color */
+        nav ul li .admin-link {
+            color: #28a99e;
+            font-weight: bold;
+        }
+
+        nav ul li .admin-link:hover {
+            color: #32c4b2;
+        }
+
+        .welcome {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            text-align: center;
+            height: 100%;
+        }
+
+        .welcome h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .welcome h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .welcome p {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        #exploreBtn {
+            display: none;
+            background: #006D5B;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        #exploreBtn:hover {
+            background: #28a99e;
+        }
+
+        #logoutBtn {
+            display: none;
+            background: #006D5B;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        #logoutBtn:hover {
+            background: #28a99e;
+        }
+
+        .login-link {
+            color: white;
+            text-decoration: none;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="catalog.html">Catalog</a></li>
+                <li><a href="login.html" id="loginLink">Login</a></li>
+                <li><a href="signup.html" id="signupLink">Sign Up</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="adminlogin.html" class="admin-link">Admin Portal</a></li> <!-- Themed Admin Portal -->
+            </ul>
+        </nav>
+        <button id="logoutBtn">Logout</button>
+    </header>
+
+    <!-- Welcome Section -->
+    <section class="welcome">
+        <h1>Welcome to the Digital Library</h1>
+        <h2>Your Gateway to Knowledge</h2>
+        <p>Explore thousands of digital books and resources from anywhere.</p>
+        <a href="login.html" class="login-link" id="loginText">Click Here to Login!</a>
+        <button id="exploreBtn" onclick="window.location.href='catalog.html'">Explore Now</button>
+    </section>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2025 Digital Library Management System. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for Authentication Handling -->
+    <script>
+        $(document).ready(function(){
+            // Check if user is logged in (after login or signup)
+            if (localStorage.getItem("isLoggedIn") === "true") {
+                $("#exploreBtn").show();
+                $("#logoutBtn").show();
+                $("#loginLink, #signupLink, #loginText").hide();
+            }
+
+            // Logout functionality
+            $("#logoutBtn").click(function(){
+                localStorage.removeItem("isLoggedIn");
+                localStorage.removeItem("isAdmin");
+                alert("You have logged out.");
+                location.reload();
+            });
+        });
+
+        function setLoginStatus() {
+            localStorage.setItem("isLoggedIn", "true"); 
+            window.location.href = "index.html";
+        }
+    </script>
+
+</body>
+</html>

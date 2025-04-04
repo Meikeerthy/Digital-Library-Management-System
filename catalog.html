@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalog - Digital Library</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        body {
+            background: url('computer-screen.jpg') no-repeat center center/cover;
+            font-family: Poppins, sans-serif;
+            color: #5e4447;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        header {
+            width: 100%;
+            text-align: center;
+            padding: 0px;
+            background-color: #006D5B;
+            color: white;
+        }
+
+        .search-container {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        input, select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #006D5B;
+            border-radius: 5px;
+        }
+
+        button {
+            background: #006D5B;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background: #28a99e;
+        }
+
+        .book-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1000px;
+            margin: 20px;
+        }
+
+        .book-card {
+           background: white;
+           padding: 15px;
+           border-radius: 8px;
+           width: 200px;
+           text-align: center;
+           box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+           display: flex;
+           flex-direction: column;
+           justify-content: space-between;
+           height: 330px;
+           transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+
+        .book-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+       .book-card:hover {
+           transform: scale(1.05);
+           box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.2);
+           cursor: pointer;
+       }
+
+
+        .book-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .book-title {
+            font-size: 16px;
+            font-weight: bold;
+            min-height: 0px; /* Ensures titles take up equal space */
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .book-author {
+            font-size: 14px;
+            color: #333;
+            min-height: 20px;
+            
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: auto;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Library Catalog</h1>
+    </header>
+
+    <div class="search-container">
+        <input type="text" id="searchBar" placeholder="Search books...">
+        <select id="categoryFilter">
+            <option value="all">All Categories</option>
+            <option value="fiction">Fiction</option>
+            <option value="nonfiction">Non-fiction</option>
+            <option value="science">Science</option>
+            <option value="history">History</option>
+            <option value="language">Language</option>
+        </select>
+        <button onclick="filterBooks()">Search</button>
+    </div>
+
+    <div class="book-list" id="bookList"></div>
+
+    <footer>
+        <button onclick="window.location.href='cart.html'">🛒 View Cart</button>
+        <button onclick="window.location.href='index.html'">🏠 Back to Home</button>
+    </footer>
+
+    <script>const books = [
+        { title: "The Great Gatsby", author: "F. Scott Fitzgerald", category: "fiction", img: "https://covers.openlibrary.org/b/id/8226191-L.jpg" },
+        { title: "A Brief History of Time", author: "Stephen Hawking", category: "science", img: "https://covers.openlibrary.org/b/id/240726-L.jpg" },
+        { title: "Sapiens: A Brief History of Humankind", author: "Yuval Noah Harari", category: "history", img: "https://covers.openlibrary.org/b/id/10521213-L.jpg" },
+        { title: "To Kill a Mockingbird", author: "Harper Lee", category: "fiction", img: "https://covers.openlibrary.org/b/id/8225630-L.jpg" },
+        { title: "The Theory of Everything", author: "Stephen Hawking", category: "science", img: "https://covers.openlibrary.org/b/id/8461926-L.jpg" },
+        { title: "1984", author: "George Orwell", category: "fiction", img: "https://covers.openlibrary.org/b/id/7222246-L.jpg" },
+        { title: "The Art of War", author: "Sun Tzu", category: "history", img: "https://covers.openlibrary.org/b/id/9915120-L.jpg" },
+        { title: "The Catcher in the Rye", author: "J.D. Salinger", category: "fiction", img: "https://covers.openlibrary.org/b/id/8225699-L.jpg" },
+        { title: "The Selfish Gene", author: "Richard Dawkins", category: "science", img: "https://covers.openlibrary.org/b/id/11220245-L.jpg" },
+        { title: "A People's History of the United States", author: "Howard Zinn", category: "history", img: "https://covers.openlibrary.org/b/id/10204745-L.jpg" },
+        { title: "Fahrenheit 451", author: "Ray Bradbury", category: "fiction", img: "https://covers.openlibrary.org/b/id/9275786-L.jpg" },
+        { title: "The Origin of Species", author: "Charles Darwin", category: "science", img: "https://covers.openlibrary.org/b/id/10543056-L.jpg" },
+        { title: "Meditations", author: "Marcus Aurelius", category: "nonfiction", img: "https://covers.openlibrary.org/b/id/12032600-M.jpg" },
+        { title: "Le Petit Prince", author: "Antoine de Saint-Exupéry", category: "language", img: "https://covers.openlibrary.org/b/id/12345678-L.jpg" },
+        { title: "Don Quixote", author: "Miguel de Cervantes", category: "language", img: "https://covers.openlibrary.org/b/id/10304222-M.jpg" },
+        { title: "Les Misérables", author: "Victor Hugo", category: "language", img: "https://covers.openlibrary.org/b/id/12728796-M.jpg" },
+        { title: "Harry Potter y la piedra filosofal", author: "J.K. Rowling", category: "language", img: "https://covers.openlibrary.org/b/id/13028155-M.jpg" },
+        { title: "The Divine Comedy", author: "Dante Alighieri", category: "history", img: "https://covers.openlibrary.org/b/id/1292325-M.jpg" },
+        { title: "War and Peace", author: "Leo Tolstoy", category: "fiction", img: "https://covers.openlibrary.org/b/id/11892245-M.jpg" },
+        { title: "Crime and Punishment", author: "Fyodor Dostoevsky", category: "fiction", img: "https://covers.openlibrary.org/b/id/12622046-M.jpg"}
+    ];
+
+        function displayBooks(bookArray) {
+            const bookList = $("#bookList");
+            bookList.empty();
+            bookArray.forEach(book => {
+                bookList.append(`
+                    <div class="book-card">
+                        <img src="${book.img}" alt="${book.title}">
+                        <div class="book-info">
+                            <div class="book-title">${book.title}</div>
+                            <div class="book-author">by ${book.author}</div>
+                        </div>
+                        <div class="button-group">
+                            <button onclick="addToCart('${book.title}')">🛒 Add to Cart</button>
+                        </div>
+                    </div>
+                `);
+            });
+        }
+
+        function addToCart(bookTitle) {
+            let selectedBook = books.find(book => book.title === bookTitle);
+            if (!selectedBook) return;
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push(selectedBook);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(`Added "${bookTitle}" to your cart.`);
+        }
+
+        function filterBooks() {
+            let searchQuery = $("#searchBar").val().toLowerCase();
+            let selectedCategory = $("#categoryFilter").val();
+            let filteredBooks = books.filter(book => 
+                book.title.toLowerCase().includes(searchQuery) &&
+                (selectedCategory === "all" || book.category === selectedCategory)
+            );
+            displayBooks(filteredBooks);
+        }
+
+        $(document).ready(() => displayBooks(books));
+    </script>
+
+</body>
+</html>

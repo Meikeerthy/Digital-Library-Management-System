@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Digital Library</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: url('computer-screen.jpg') no-repeat center center/cover;
+            min-height: 100vh; /* Full screen */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-container {
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #006D5B;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #28a99e;
+        }
+        footer {
+            margin-top: 10px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            color: white;
+        }
+        footer a {
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #004D3B;
+            border-radius: 5px;
+        }
+        footer a:hover {
+            background-color: #28a99e;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        <form onsubmit="return validateLogin()">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" class="btn">Login</button>
+        </form>
+    </div>
+    <footer>
+        <a href="index.html">🏠 Back to Home</a>
+        <p>&copy; 2025 Digital Library. All rights reserved.</p>
+    </footer><script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Check if the admin is already logged in
+        if (sessionStorage.getItem("adminLoggedIn") === "true") {
+            window.location.href = "admin_dashboard.html"; 
+        }
+    });
+
+    function validateLogin() {
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+
+        if (username === "admin" && password === "admin123") {
+            sessionStorage.setItem("adminLoggedIn", "true"); // Store login status
+            alert("Login Successful!");
+            window.location.href = "admin_dashboard.html"; // Redirect to dashboard
+            return false;
+        } else {
+            alert("Invalid credentials! Try again.");
+            return false;
+        }
+    }
+</script>
+
+</body>
+</html>

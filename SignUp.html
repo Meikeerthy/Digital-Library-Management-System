@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Digital Library Management System</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background: url('computer-screen.jpg') no-repeat center center/cover;
+            margin: 0;
+            font-family: Poppins, sans-serif;
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .form-container h1 {
+            margin-bottom: 20px;
+            font-size: 36px;
+        }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .form-container button {
+            background: #006D5B;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 100%;
+            border-radius: 5px;
+        }
+        .form-container button:hover {
+            background:  #28a99e;
+        }
+        .form-container p {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+        .form-container p a {
+            color:  #28a99e;
+            text-decoration: none;
+        }
+        .form-container p a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sign Up Form -->
+    <div class="form-container">
+        <h1>Sign Up</h1>
+        <form id="signUpForm">
+            <input type="text" id="username" placeholder="Full Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="login.html">Login</a></p>
+    </div>
+
+    <!-- JavaScript for Form Validation -->
+    <script>
+        $(document).ready(function() {
+            $("#signUpForm").submit(function(event) {
+                event.preventDefault(); // Prevent default form submission
+                
+                let username = $("#username").val();
+                let email = $("#email").val();
+                let password = $("#password").val();
+                let confirmPassword = $("#confirmPassword").val();
+
+                // Validate password match
+                if (password !== confirmPassword) {
+                    alert("Passwords do not match!");
+                    return;
+                }
+
+                // Simulate storing user data (You should replace this with actual backend storage)
+                localStorage.setItem("isLoggedIn", "true");
+                localStorage.setItem("username", username);
+                localStorage.setItem("email", email);
+
+                alert("Sign up successful! Redirecting...");
+                window.location.href = "index.html"; // Redirect to homepage
+            });
+        });
+    </script>
+    
+</body>
+</html>

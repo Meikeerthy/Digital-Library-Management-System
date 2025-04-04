@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users - Digital Library</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('computer-screen.jpg') no-repeat center center fixed;
+            background-size: cover;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        th {
+            background-color: #006D5B;
+            color: white;
+        }
+        .btn {
+            background-color: #006D5B;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+        }
+        .btn:hover {
+            background-color: #28a99e;
+        }
+        .delete-btn {
+            background-color: red;
+            color: white;
+            padding: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        input {
+            width: 90%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>👤 Manage Users</h2>
+        <p>Add, remove, and manage users of the Digital Library.</p>
+
+        <form onsubmit="addUser(event)">
+            <input type="text" id="username" placeholder="Enter Username" required>
+            <input type="email" id="email" placeholder="Enter Email" required>
+            <button type="submit" class="btn">➕ Add User</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="userList">
+                <!-- User list will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <a href="admin_dashboard.html" class="btn">🏠 Back to Dashboard</a>
+        <p>&copy; 2025 Digital Library. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Sample users (Replace with backend data)
+        var users = [
+            { username: "Alice", email: "alice@example.com" },
+            { username: "Bob", email: "bob@example.com" },
+            { username: "Charlie", email: "charlie@example.com" }
+        ];
+
+        function displayUsers() {
+            var table = document.getElementById("userList");
+            table.innerHTML = "";
+            users.forEach((user, index) => {
+                var row = table.insertRow();
+                row.insertCell(0).innerText = user.username;
+                row.insertCell(1).innerText = user.email;
+                row.insertCell(2).innerHTML = `<button class="delete-btn" onclick="deleteUser(${index})">❌ Remove</button>`;
+            });
+        }
+
+        function addUser(event) {
+            event.preventDefault();
+            var username = document.getElementById("username").value;
+            var email = document.getElementById("email").value;
+            users.push({ username, email });
+            displayUsers();
+            document.getElementById("username").value = "";
+            document.getElementById("email").value = "";
+        }
+
+        function deleteUser(index) {
+            users.splice(index, 1);
+            displayUsers();
+        }
+
+        displayUsers();
+    </script>
+</body>
+</html>
